@@ -117,6 +117,7 @@ new Vue({
 			this.categories.push({
 				whiteText: true,
 				color: "#424242",
+				items: [],
 				name: "Edit name"
 			});
 		},

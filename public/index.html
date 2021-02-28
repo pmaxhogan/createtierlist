@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Create Tier List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css'>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css'>
+	<link rel='stylesheet' href='/style.css'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900'>
+	<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<div id="app">
+	<v-app @popstate="updateState($event.state)">
+		<v-main dark v-cloak>
+			<v-container>
+				<h1>Create Tier List</h1>
+
+				<h2>Load Items Preset</h2>
+				<v-container fluid>
+					<v-row>
+						<v-col cols="12" sm="6" md="3">
+							<v-select class="shrink" solo :items="Object.keys(templates)" label="Load items preset" v-model="presetToLoad"></v-select>
+						</v-col>
+						<v-col cols="12" sm="6" md="3">
+							<v-btn @click="loadPreset">Load</v-btn>
+						</v-col>
+					</v-row>
+				</v-container>
+
+				<v-container fluid>
+					<v-row>
+						<v-col cols="12" lg="6">
+							<h2>Add Item to List</h2>
+							<v-form @submit.prevent="addText" autocomplete="off">
+								<v-container fluid>
+									<v-row dense>
+										<v-col cols="12" sm="9" md="8">
+											<v-text-field hide-details="auto" 	solo v-model="textToAdd" label="Item to add"></v-text-field>
+										</v-col>
+										<v-col>
+											<v-btn @click="addText">Add</v-btn>
+										</v-col>
+									</v-row>
+								</v-container>
+							</v-form>
+							<h2 v-if="items.length">Drag Items to List</h2>
+							<draggable v-model="items" group="items" @start="drag=true" @end="drag=false" :move="onMove">
+								<div v-for="element in items" :key="element.id">{{element.name}}</div>
+							</draggable>
+						</v-col>
+
+						<v-col cols="12" lg="6" order-lg="first">
+							<h2 contenteditable @blur="listName = $event.target.innerText">{{listName}}</h2>
+							<div class="item-table">
+								<!-- 				<div>Tier</div><div>Items</div> -->
+								<template v-for="category in categories">
+									<div class="tier-name" @blur="category.name = $event.target.innerText" contenteditable :class="{'black--text': !category.whiteText}" :style="{backgroundColor: category.color}">
+										{{category.name}}
+									</div>
+
+									<div class="tier-content" @contextmenu.stop.prevent="deleteTier(category)">
+										<draggable v-model="category.items" group="items" @start="drag=true" @end="drag=false" :move="onMove">
+											<div v-for="element in category.items" :key="element.id">{{element.name}}</div>
+										</draggable>
+										<!-- 								<div v-if="!category.items.length">Drag here</div> -->
+									</div>
+
+									<v-btn class="delete-tier" elevation="3" icon @click="deleteTier(category)"><v-icon>mdi-delete</v-icon></v-btn>
+								</template>
+							</div>
+
+
+							<v-btn @click="addTier">Add tier</v-btn>
+							<v-btn outlined @click="resetItems">Reset items</v-btn>
+							<v-btn outlined @click="resetTiers">Reset tiers and items</v-btn>
+
+							<h2 v-if="drag">Drag below to delete</h2>
+							<draggable v-model="trash" group="items" @start="drag=true" @end="drag=false" :move="onMove">
+							</draggable>
+						</v-col>
+					</v-row>
+				</v-container>
+
+				<!-- 			<v-simple-table>
+				<template v-slot:default>
+					<thead>
+						<tr>
+							<td>Tier</td>
+							<td>Items</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="category in categories">
+							<td :class="{'black--text': !category.whiteText}" :style="{backgroundColor: category.color}">
+								<div contenteditable>{{category.name}}</div>
+								</td>
+							<td>
+
+
+								<draggable v-model="category.items" group="items" @start="drag=true" @end="drag=false" :move="onMove">
+									<div v-for="element in category.items" :key="element.id">{{element.name}}</div>
+								</draggable>
+								<!-- 								<div v-if="!category.items.length">Drag here</div> --
+							</td>
+						</tr>
+					</tbody>
+				</template>
+			</v-simple-table> -->
+			</v-container>
+		</v-main>
+	</v-app>
+</div>
+  <script src='https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js'></script>
+<script  src="./script.js"></script>
+
+</body>
+</html>

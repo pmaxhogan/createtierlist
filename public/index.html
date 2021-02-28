@@ -53,11 +53,11 @@
 						</v-col>
 
 						<v-col cols="12" lg="6" order-lg="first">
-							<h2 contenteditable @blur="listName = $event.target.innerText">{{listName}}</h2>
+							<h2 contenteditable @paste.prevent.stop @blur="listName = $event.target.innerText">{{listName}}</h2>
 							<div class="item-table">
 								<!-- 				<div>Tier</div><div>Items</div> -->
 								<template v-for="category in categories">
-									<div class="tier-name" @blur="category.name = $event.target.innerText" contenteditable :class="{'black--text': !category.whiteText}" :style="{backgroundColor: category.color}">
+									<div class="tier-name" ref="me" @paste.prevent.stop @blur="category.name = $event.target.innerText" contenteditable :class="{'black--text': !category.whiteText}" :style="{backgroundColor: category.color}">
 										{{category.name}}
 									</div>
 

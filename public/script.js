@@ -83,6 +83,19 @@ new Vue({
 		listName: "Unnamed Tier List"
 	},
 	methods: {
+		// broken
+		// paste(event){
+		// 	const text = (event.clipboardData || window.clipboardData).getData('text');
+		//
+		// 	const selection = window.getSelection();
+		// 	if (!selection.rangeCount) return false;
+		// 	selection.deleteFromDocument();
+		// 	selection.getRangeAt(0).insertNode(document.createTextNode(text));
+		//
+		// 	console.log(selection.focusNode.innerText);
+		//
+		// 	event.preventDefault();
+		// },
 		putStateInUrl(){
 			const data = {items: this.items, categories: this.categories, listName: this.listName};
 			location = "#" + encodeURIComponent(JSON.stringify(data));
